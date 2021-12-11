@@ -178,10 +178,7 @@ func roundTied() bool {
 }
 
 func didPlayerLost(player *player.Player, bet int) bool {
-	if player.GetMoney() <= bet {
-		return true
-	}
-	return false
+	return player.GetMoney() <= bet
 }
 
 func displayRoundInfo(winningCoin *coin.Coin) {
