@@ -149,12 +149,12 @@ func concludeTurn(human_player, ai_player *player.Player, winResult *WinResult, 
 func playerWonTheRound(human_player, ai_player *player.Player, bet int) bool {
 	didLose := didPlayerLost(ai_player, bet)
 	if didLose {
-		fmt.Println("You lost, you do not have sufficient credit to pay off the bet")
+		fmt.Println("You win, ai has gone bankrupt")
 		return true
 	} else {
-		fmt.Println("You lost the round")
-		ai_player.Won(bet)
-		human_player.Lost(bet)
+		fmt.Println("You win the round")
+		ai_player.Lost(bet)
+		human_player.Won(bet)
 		return false
 	}
 }
@@ -162,12 +162,13 @@ func playerWonTheRound(human_player, ai_player *player.Player, bet int) bool {
 func aiWonTheRound(human_player, ai_player *player.Player, bet int) bool {
 	didLose := didPlayerLost(human_player, bet)
 	if didLose {
-		fmt.Println("You win, ai has gone bankrupt")
+		fmt.Println("You lost, you do not have sufficient credit to pay off the bet")
+
 		return true
 	} else {
-		fmt.Println("You win the round")
-		ai_player.Lost(bet)
-		human_player.Won(bet)
+		fmt.Println("You lost the round")
+		ai_player.Won(bet)
+		human_player.Lost(bet)
 		return false
 	}
 }
