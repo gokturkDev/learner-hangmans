@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"game_utils/game_loop"
 	"os"
 	"os/exec"
 )
@@ -15,5 +16,5 @@ func main() {
 
 	var b []byte = make([]byte, 1)
 	os.Stdin.Read(b)
-	StartGameLoop()
+	game_loop.StartGameLoop()
 }
