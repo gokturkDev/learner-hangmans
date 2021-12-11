@@ -45,15 +45,19 @@ func gameLoop(human_player, ai_player *player.Player) {
 func playerTurn(player *player.Player) {
 	fmt.Println("It is your turn!")
 	for {
-		if *getInputBet() > player.GetMoney() {
-			fmt.Println("You don't have that much!")
-			continue
-		} else {
-			break
-		}
+		bet := getPlayerBet(player)
 	}
 }
 
+func getPlayerBet(player *player.Player) int {
+	bet := getInputBet()
+	if *bet > player.GetMoney() {
+		fmt.Println("You don't have that much!")
+		return getPlayerBet(player)
+	} else {
+		return *bet
+	}
+}
 func getInputBet() *int {
 	var bet int
 	fmt.Println("Enter the amount you want to bet:")
