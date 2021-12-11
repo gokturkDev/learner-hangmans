@@ -118,13 +118,10 @@ func isTwoCoinsEqual(firstCoin, secondCoin *coin.Coin) bool {
 type WinResult struct {
 	player_won bool
 	ai_won     bool
-	draw       bool
 }
 
 func whoWon(human_coin, ai_coin, winning_coin *coin.Coin) WinResult {
-	if isTwoCoinsEqual(human_coin, winning_coin) && isTwoCoinsEqual(ai_coin, winning_coin) { //
-		return WinResult{draw: true}
-	} else if isTwoCoinsEqual(human_coin, winning_coin) {
+	if isTwoCoinsEqual(human_coin, winning_coin) {
 		return WinResult{player_won: true}
 	}
 	return WinResult{ai_won: true}
@@ -140,10 +137,9 @@ func evaluateResult(human_coin, ai_coin *coin.Coin) WinResult {
 func concludeTurn(human_player, ai_player *player.Player, winResult *WinResult, bet int) bool {
 	if winResult.player_won {
 		return playerWonTheRound(human_player, ai_player, bet)
-	} else if winResult.ai_won {
-		return aiWonTheRound(human_player, ai_player, bet)
 	}
-	return roundTied()
+	return aiWonTheRound(human_player, ai_player, bet)
+
 }
 
 func playerWonTheRound(human_player, ai_player *player.Player, bet int) bool {
@@ -171,11 +167,6 @@ func aiWonTheRound(human_player, ai_player *player.Player, bet int) bool {
 		human_player.Lost(bet)
 		return false
 	}
-}
-
-func roundTied() bool {
-	fmt.Println("The round was a tie")
-	return false
 }
 
 func didPlayerLost(player *player.Player, bet int) bool {
