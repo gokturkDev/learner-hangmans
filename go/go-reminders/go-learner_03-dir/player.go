@@ -11,10 +11,6 @@ type Player struct {
 	loss  int
 }
 
-type Coin struct {
-	heads, tails bool
-}
-
 func (ply Player) Won(amount int) {
 	ply.money += amount
 }
