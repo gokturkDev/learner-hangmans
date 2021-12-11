@@ -39,23 +39,23 @@ func gameLoop(human_player, ai_player *player.Player) {
 		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
 		if isPlayerTurn {
-			playerTurn(human_player, ai_player)
+			isGameOver = playerTurn(human_player, ai_player)
 			isPlayerTurn = false
 		} else {
-			aiTurn(human_player, ai_player)
+			isGameOver = aiTurn(human_player, ai_player)
 			isPlayerTurn = true
 		}
 	}
 	fmt.Println("Thank you for playing")
 }
 
-func playerTurn(human_player, ai_player *player.Player) {
+func playerTurn(human_player, ai_player *player.Player) bool {
 	fmt.Println("It is your turn!")
 	bet := getPlayerBet(human_player)
 	human_coin := playerHeadsOrTails()
 	ai_coin := getRandCoin()
 	result := evaluateResult(&human_coin, &ai_coin)
-	concludeTurn(human_player, ai_player, &result, bet)
+	return concludeTurn(human_player, ai_player, &result, bet)
 }
 
 func getPlayerBet(player *player.Player) int {
@@ -88,15 +88,15 @@ func getInputBet() *int {
 	return &bet
 }
 
-func aiTurn(human_player, ai_player *player.Player) {
+func aiTurn(human_player, ai_player *player.Player) bool {
 	fmt.Println("It is ai turn!")
 	bet := getAIBet(ai_player)
 	printAndSleep("Ai is choosing a bet...")
 	fmt.Printf("AI has chosen %d for bet\n", bet)
-	human_coin := playerHeadsOrTails()
 	ai_coin := getRandCoin()
+	printAndSleep(fmt.Sprint("AI has chosen %s"))
 	result := evaluateResult(&human_coin, &ai_coin)
-	concludeTurn(human_player, ai_player, &result, bet)
+	return concludeTurn(human_player, ai_player, &result, bet)
 }
 
 func getAIBet(player *player.Player) int {
