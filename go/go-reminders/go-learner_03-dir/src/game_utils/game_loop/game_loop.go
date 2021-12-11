@@ -33,7 +33,8 @@ func StartGameLoop() {
 
 func gameLoop(human_player, ai_player *player.Player) {
 	isPlayerTurn := true
-	for { //this is the while of GO
+	isGameOver := false
+	for !isGameOver { //this is the while of GO
 		screen.Clear()
 		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
@@ -44,13 +45,16 @@ func gameLoop(human_player, ai_player *player.Player) {
 			aiTurn(ai_player)
 		}
 	}
+	fmt.Println("Thank you for playing")
 }
 
 func playerTurn(player *player.Player) {
 	fmt.Println("It is your turn!")
 	for {
 		bet := getPlayerBet(player)
-		coin := playerHeadsOrTails()
+		human_coin := playerHeadsOrTails()
+		ai_coin := getRandCoin()
+		result := evaluateResult(&human_coin, &ai_coin)
 
 	}
 }
@@ -93,10 +97,91 @@ func getAIBet(player *player.Player) int {
 	return rand.Intn(player.GetMoney())
 }
 
-func aiHeadsOrTails() coin.Coin {
+func getRandCoin() coin.Coin {
 	randNum := rand.Intn(1)
 	if randNum < 1 {
 		return coin.NewHeadsCoin()
 	}
 	return coin.NewTailsCoin()
+}
+
+func isTwoCoinsEqual(firstCoin, secondCoin *coin.Coin) bool {
+	return firstCoin.IsHeads() == secondCoin.IsHeads()
+}
+
+type WinResult struct {
+	player_won bool
+	ai_won     bool
+	draw       bool
+}
+
+func whoWon(human_coin, ai_coin, winning_coin *coin.Coin) WinResult {
+	if isTwoCoinsEqual(human_coin, winning_coin) && isTwoCoinsEqual(ai_coin, winning_coin) { //
+		return WinResult{draw: true}
+	} else if isTwoCoinsEqual(human_coin, winning_coin) {
+		return WinResult{player_won: true}
+	}
+	return WinResult{ai_won: true}
+}
+
+func evaluateResult(human_coin, ai_coin *coin.Coin) WinResult {
+	winning_coin := getRandCoin()
+	win_result := whoWon(human_coin, ai_coin, &winning_coin)
+	return win_result
+}
+
+func concludeTurn(human_player, ai_player *player.Player, winResult *WinResult, bet int) bool {
+	if winResult.player_won {
+		return playerWonTheRound(human_player, ai_player, bet)
+	} else if winResult.ai_won {
+		return aiWonTheRound(human_player, ai_player, bet)
+	}
+	return roundTied()
+}
+
+func playerWonTheRound(human_player, ai_player *player.Player, bet int) bool {
+	didLose := didPlayerLost(ai_player, bet)
+	if didLose {
+		fmt.Println("You lost, you do not have sufficient credit to pay off the bet")
+		return true
+	} else {
+		fmt.Println("You lost the round")
+		ai_player.Won(bet)
+		human_player.Lost(bet)
+		return false
+	}
+}
+
+func aiWonTheRound(human_player, ai_player *player.Player, bet int) bool {
+	didLose := didPlayerLost(human_player, bet)
+	if didLose {
+		fmt.Println("You win, ai has gone bankrupt")
+		return true
+	} else {
+		fmt.Println("You win the round")
+		ai_player.Lost(bet)
+		human_player.Won(bet)
+		return false
+	}
+}
+
+func roundTied() bool {
+	fmt.Println("The round was a tie")
+	return false
+}
+
+func didPlayerLost(player *player.Player, bet int) bool {
+	if player.GetMoney() <= bet {
+		return true
+	}
+	return false
+}
+
+func displayRoundInfo(winningCoin *coin.Coin) {
+	var sideInfo string
+	if winningCoin.IsHeads() {
+		sideInfo = "Heads"
+	}
+	sideInfo = "Tails"
+	fmt.Printf("The coin landed on %s", sideInfo)
 }

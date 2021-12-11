@@ -12,6 +12,6 @@ func NewTailsCoin() Coin {
 	return Coin{tails: true}
 }
 
-func (coin *Coin) isHeads() bool {
+func (coin *Coin) IsHeads() bool {
 	return coin.heads
 }
