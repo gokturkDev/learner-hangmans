@@ -39,7 +39,7 @@ func gameLoop(human_player, ai_player *player.Player) {
 		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
 		if isPlayerTurn {
-			playerTurn(human_player)
+			playerTurn(human_player, ai_player)
 			isPlayerTurn = false
 		} else {
 			aiTurn(ai_player)
@@ -48,14 +48,13 @@ func gameLoop(human_player, ai_player *player.Player) {
 	fmt.Println("Thank you for playing")
 }
 
-func playerTurn(player *player.Player) {
+func playerTurn(human_player, ai_player *player.Player) {
 	fmt.Println("It is your turn!")
 	for {
-		bet := getPlayerBet(player)
+		bet := getPlayerBet(human_player)
 		human_coin := playerHeadsOrTails()
 		ai_coin := getRandCoin()
 		result := evaluateResult(&human_coin, &ai_coin)
-
 	}
 }
 
