@@ -6,7 +6,7 @@ import (
 )
 
 type Coin struct {
-	heads, tails bool
+	Heads, Tails bool
 }
 
 func flipACoin() Coin {
