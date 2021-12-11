@@ -104,8 +104,8 @@ func getAIBet(player *player.Player) int {
 }
 
 func getRandCoin() coin.Coin {
-	randNum := rand.Intn(1)
-	if randNum < 1 {
+	randNum := rand.Intn(2)
+	if randNum == 0 {
 		return coin.NewHeadsCoin()
 	}
 	return coin.NewTailsCoin()
