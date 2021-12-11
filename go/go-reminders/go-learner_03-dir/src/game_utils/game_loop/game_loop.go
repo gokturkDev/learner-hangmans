@@ -10,13 +10,13 @@ import (
 func StartGameLoop() {
 	human_player := player.New()
 	ai_player := player.New()
-	screen.Clear()
 	gameLoop(&human_player, &ai_player)
 }
 
 func gameLoop(human_player, ai_player *player.Player) {
 	isPlayerTurn := true
 	for { //this is the while of GO
+		screen.Clear()
 		fmt.Printf("Your coins left: %d", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d", ai_player.GetMoney())
 		if isPlayerTurn {
