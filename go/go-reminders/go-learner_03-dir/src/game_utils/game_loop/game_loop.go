@@ -185,9 +185,10 @@ func displayRoundInfo(winningCoin *coin.Coin) {
 	var sideInfo string
 	if winningCoin.IsHeads() {
 		sideInfo = "Heads"
+	} else {
+		sideInfo = "Tails"
 	}
-	sideInfo = "Tails"
-	fmt.Printf("The coin landed on %s\n", sideInfo)
+	printAndSleep(fmt.Sprintf("The coin landed on %s", sideInfo))
 }
 
 func printAndSleep(text string) {
