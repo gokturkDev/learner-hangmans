@@ -31,8 +31,8 @@ func gameLoop(human_player, ai_player *player.Player) {
 	isPlayerTurn := true
 	for { //this is the while of GO
 		screen.Clear()
-		fmt.Printf("Your coins left: %d", human_player.GetMoney())
-		fmt.Printf("AI coins left: %d", ai_player.GetMoney())
+		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
+		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
 		if isPlayerTurn {
 			playerTurn(human_player)
 			isPlayerTurn = false
@@ -45,7 +45,7 @@ func gameLoop(human_player, ai_player *player.Player) {
 func playerTurn(player *player.Player) {
 	fmt.Println("It is your turn!")
 	for {
-		if *getBet() > player.GetMoney() {
+		if *getInputBet() > player.GetMoney() {
 			fmt.Println("You don't have that much!")
 			continue
 		} else {
@@ -54,7 +54,7 @@ func playerTurn(player *player.Player) {
 	}
 }
 
-func getBet() *int {
+func getInputBet() *int {
 	var bet int
 	fmt.Println("Enter the amount you want to bet:")
 	fmt.Scan(&bet)
