@@ -51,6 +51,7 @@ func playerTurn(player *player.Player) {
 	for {
 		bet := getPlayerBet(player)
 		coin := playerHeadsOrTails()
+
 	}
 }
 
@@ -90,4 +91,12 @@ func aiTurn(player *player.Player) {
 
 func getAIBet(player *player.Player) int {
 	return rand.Intn(player.GetMoney())
+}
+
+func aiHeadsOrTails() coin.Coin {
+	randNum := rand.Intn(1)
+	if randNum < 1 {
+		return coin.Coin{Heads: true}
+	}
+	return coin.Coin{Tails: true}
 }
