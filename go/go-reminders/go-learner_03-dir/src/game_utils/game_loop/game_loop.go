@@ -71,9 +71,9 @@ func playerHeadsOrTails() coin.Coin {
 		fmt.Println("Heads Or Tails? (h/t)")
 		fmt.Scan(&selection)
 		if selection == "h" {
-			return coin.Coin{Heads: true}
+			return coin.NewHeadsCoin()
 		} else if selection == "t" {
-			return coin.Coin{Tails: true}
+			return coin.NewTailsCoin()
 		}
 	}
 }
@@ -96,7 +96,7 @@ func getAIBet(player *player.Player) int {
 func aiHeadsOrTails() coin.Coin {
 	randNum := rand.Intn(1)
 	if randNum < 1 {
-		return coin.Coin{Heads: true}
+		return coin.NewHeadsCoin()
 	}
-	return coin.Coin{Tails: true}
+	return coin.NewTailsCoin()
 }
