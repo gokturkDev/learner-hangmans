@@ -42,7 +42,8 @@ func gameLoop(human_player, ai_player *player.Player) {
 			playerTurn(human_player, ai_player)
 			isPlayerTurn = false
 		} else {
-			aiTurn(ai_player)
+			aiTurn(human_player, ai_player)
+			isPlayerTurn = true
 		}
 	}
 	fmt.Println("Thank you for playing")
@@ -55,6 +56,7 @@ func playerTurn(human_player, ai_player *player.Player) {
 		human_coin := playerHeadsOrTails()
 		ai_coin := getRandCoin()
 		result := evaluateResult(&human_coin, &ai_coin)
+		concludeTurn(human_player, ai_player, &result, bet)
 	}
 }
 
@@ -88,8 +90,17 @@ func getInputBet() *int {
 	return &bet
 }
 
-func aiTurn(player *player.Player) {
-
+func aiTurn(human_player, ai_player *player.Player) {
+	fmt.Println("It is ai turn!")
+	for {
+		bet := getAIBet(ai_player)
+		printAndSleep("Ai is choosing a bet...")
+		fmt.Printf("AI has chosen %d for bet\n", bet)
+		human_coin := playerHeadsOrTails()
+		ai_coin := getRandCoin()
+		result := evaluateResult(&human_coin, &ai_coin)
+		concludeTurn(human_player, ai_player, &result, bet)
+	}
 }
 
 func getAIBet(player *player.Player) int {
@@ -126,6 +137,7 @@ func whoWon(human_coin, ai_coin, winning_coin *coin.Coin) WinResult {
 func evaluateResult(human_coin, ai_coin *coin.Coin) WinResult {
 	winning_coin := getRandCoin()
 	win_result := whoWon(human_coin, ai_coin, &winning_coin)
+	displayRoundInfo(&winning_coin)
 	return win_result
 }
 
@@ -183,4 +195,9 @@ func displayRoundInfo(winningCoin *coin.Coin) {
 	}
 	sideInfo = "Tails"
 	fmt.Printf("The coin landed on %s", sideInfo)
+}
+
+func printAndSleep(text string) {
+	fmt.Println(text)
+	time.Sleep(time.Second)
 }
