@@ -15,3 +15,10 @@ func NewTailsCoin() Coin {
 func (coin *Coin) IsHeads() bool {
 	return coin.heads
 }
+
+func (coin *Coin) getOppositeCoin() Coin {
+	if coin.heads {
+		return NewTailsCoin()
+	}
+	return NewHeadsCoin()
+}
