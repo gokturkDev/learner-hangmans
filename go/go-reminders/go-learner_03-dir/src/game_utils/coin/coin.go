@@ -1,9 +1,16 @@
 package coin
 
 type Coin struct {
-	Heads, Tails bool
+	heads, tails bool
 }
 
-		return Coin{Heads: true}
+func New(isHeads bool) Coin {
+	if isHeads {
+		return Coin{heads: true}
 	}
+	return Coin{tails: true}
+}
+
+func (coin *Coin) isHeads() bool {
+	return coin.heads
 }
