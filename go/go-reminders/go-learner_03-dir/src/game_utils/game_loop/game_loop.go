@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/inancgumus/screen"
 )
 
 func main() {
@@ -33,7 +35,7 @@ func gameLoop(human_player, ai_player *player.Player) {
 	isPlayerTurn := true
 	isGameOver := false
 	for !isGameOver { //this is the while of GO
-
+		screen.Clear()
 		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
 		if isPlayerTurn {
