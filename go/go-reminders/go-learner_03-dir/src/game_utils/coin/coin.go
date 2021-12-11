@@ -4,10 +4,11 @@ type Coin struct {
 	heads, tails bool
 }
 
-func New(isHeads bool) Coin {
-	if isHeads {
-		return Coin{heads: true}
-	}
+func NewHeadsCoin() Coin {
+	return Coin{heads: true}
+}
+
+func NewTailsCoin() Coin {
 	return Coin{tails: true}
 }
 
