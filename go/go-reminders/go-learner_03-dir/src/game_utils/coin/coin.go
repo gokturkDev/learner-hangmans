@@ -16,7 +16,7 @@ func (coin *Coin) IsHeads() bool {
 	return coin.heads
 }
 
-func (coin *Coin) getOppositeCoin() Coin {
+func (coin *Coin) GetOppositeCoin() Coin {
 	if coin.heads {
 		return NewTailsCoin()
 	}

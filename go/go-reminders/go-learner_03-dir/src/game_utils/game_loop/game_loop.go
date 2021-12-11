@@ -8,8 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"time"
-
-	"github.com/inancgumus/screen"
 )
 
 func main() {
@@ -35,7 +33,7 @@ func gameLoop(human_player, ai_player *player.Player) {
 	isPlayerTurn := true
 	isGameOver := false
 	for !isGameOver { //this is the while of GO
-		screen.Clear()
+
 		fmt.Printf("Your coins left: %d \n", human_player.GetMoney())
 		fmt.Printf("AI coins left: %d \n", ai_player.GetMoney())
 		if isPlayerTurn {
@@ -53,7 +51,7 @@ func playerTurn(human_player, ai_player *player.Player) bool {
 	fmt.Println("It is your turn!")
 	bet := getPlayerBet(human_player)
 	human_coin := playerHeadsOrTails()
-	ai_coin := getRandCoin()
+	ai_coin := human_coin.GetOppositeCoin()
 	result := evaluateResult(&human_coin, &ai_coin)
 	return concludeTurn(human_player, ai_player, &result, bet)
 }
@@ -94,7 +92,8 @@ func aiTurn(human_player, ai_player *player.Player) bool {
 	printAndSleep("Ai is choosing a bet...")
 	fmt.Printf("AI has chosen %d for bet\n", bet)
 	ai_coin := getRandCoin()
-	printAndSleep(fmt.Sprint("AI has chosen %s"))
+	printAndSleep(fmt.Sprint("AI has chosen %s", coinToString(&ai_coin)))
+	human_coin := ai_coin.GetOppositeCoin()
 	result := evaluateResult(&human_coin, &ai_coin)
 	return concludeTurn(human_player, ai_player, &result, bet)
 }
@@ -130,7 +129,7 @@ func whoWon(human_coin, ai_coin, winning_coin *coin.Coin) WinResult {
 func evaluateResult(human_coin, ai_coin *coin.Coin) WinResult {
 	winning_coin := getRandCoin()
 	win_result := whoWon(human_coin, ai_coin, &winning_coin)
-	displayRoundInfo(&winning_coin)
+	printAndSleep(fmt.Sprintf("The coin landed on %s", coinToString(&winning_coin)))
 	return win_result
 }
 
@@ -173,14 +172,14 @@ func didPlayerLost(player *player.Player, bet int) bool {
 	return player.GetMoney() <= bet
 }
 
-func displayRoundInfo(winningCoin *coin.Coin) {
+func coinToString(coin *coin.Coin) string {
 	var sideInfo string
-	if winningCoin.IsHeads() {
+	if coin.IsHeads() {
 		sideInfo = "Heads"
 	} else {
 		sideInfo = "Tails"
 	}
-	printAndSleep(fmt.Sprintf("The coin landed on %s", sideInfo))
+	return sideInfo
 }
 
 func printAndSleep(text string) {
