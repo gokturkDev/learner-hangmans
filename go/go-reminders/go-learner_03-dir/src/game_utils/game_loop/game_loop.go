@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"game_utils/player"
+	"math/rand"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/inancgumus/screen"
 )
@@ -15,6 +17,7 @@ func main() {
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+	rand.NewSource(time.Now().Unix())
 
 	var b []byte = make([]byte, 1)
 	os.Stdin.Read(b)
@@ -58,6 +61,7 @@ func getPlayerBet(player *player.Player) int {
 		return *bet
 	}
 }
+
 func getInputBet() *int {
 	var bet int
 	fmt.Println("Enter the amount you want to bet:")
@@ -67,4 +71,8 @@ func getInputBet() *int {
 
 func aiTurn(player *player.Player) {
 
+}
+
+func getAIBet(player *player.Player) int {
+	return rand.Intn(player.GetMoney())
 }
