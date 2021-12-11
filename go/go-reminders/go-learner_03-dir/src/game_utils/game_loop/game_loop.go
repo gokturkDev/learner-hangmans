@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"game_utils/coin"
 	"game_utils/player"
 	"math/rand"
 	"os"
@@ -49,6 +50,7 @@ func playerTurn(player *player.Player) {
 	fmt.Println("It is your turn!")
 	for {
 		bet := getPlayerBet(player)
+		coin := playerHeadsOrTails()
 	}
 }
 
@@ -59,6 +61,19 @@ func getPlayerBet(player *player.Player) int {
 		return getPlayerBet(player)
 	} else {
 		return *bet
+	}
+}
+
+func playerHeadsOrTails() coin.Coin {
+	for {
+		var selection string
+		fmt.Println("Heads Or Tails? (h/t)")
+		fmt.Scan(&selection)
+		if selection == "h" {
+			return coin.Coin{Heads: true}
+		} else if selection == "t" {
+			return coin.Coin{Tails: true}
+		}
 	}
 }
 
